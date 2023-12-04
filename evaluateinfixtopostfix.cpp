@@ -14,53 +14,53 @@ int precedence(char op) {
 
 // Function to convert infix expression to postfix expression
 string infixToPostfix(string infix) {
-  stack<char> s; // Stack to store operators and parentheses
-  string postfix = ""; // String to store the postfix expression
+  stack<char> s; 									// Stack to store operators and parentheses
+  string postfix = ""; 								// String to store the postfix expression
   for (int i = 0; i < infix.length(); i++) {
-    char c = infix[i]; // Current character
-    if (c == ' ') continue; // Ignore whitespace
-    if (isdigit(c)) { // If the character is a digit
-      postfix += c; // Add it to the postfix expression
+    char c = infix[i]; 								// Current character
+    if (c == ' ') continue; 						// Ignore whitespace
+    if (isdigit(c)) { 								// If the character is a digit
+      postfix += c; 								// Add it to the postfix expression
     }
-    else if (c == '(') { // If the character is an opening parenthesis
-      s.push(c); // Push it to the stack
+    else if (c == '(') {							 // If the character is an opening parenthesis
+      s.push(c);									 // Push it to the stack
     }
-    else if (c == ')') { // If the character is a closing parenthesis
-      while (!s.empty() && s.top() != '(') { // Pop and append all the operators until an opening parenthesis is found
+    else if (c == ')') { 								// If the character is a closing parenthesis
+      while (!s.empty() && s.top() != '(') { 			// Pop and append all the operators until an opening parenthesis is found
         postfix += s.top();
         s.pop();
       }
-      if (!s.empty() && s.top() == '(') { // Pop and discard the opening parenthesis
+      if (!s.empty() && s.top() == '(') { 				// Pop and discard the opening parenthesis
         s.pop();
       }
     }
-    else { // If the character is an operator
+    else { 															// If the character is an operator
       while (!s.empty() && precedence(c) <= precedence(s.top())) { // Pop and append all the operators with higher or equal precedence
         postfix += s.top();
         s.pop();
       }
-      s.push(c); // Push the current operator to the stack
+      s.push(c); 													// Push the current operator to the stack
     }
   }
-  while (!s.empty()) { // Pop and append the remaining operators in the stack
+  while (!s.empty()) {												 // Pop and append the remaining operators in the stack
     postfix += s.top();
     s.pop();
   }
-  return postfix; // Return the postfix expression
+  return postfix;													 // Return the postfix expression
 }
 
 int evaluatePostfix(string postfix) {
-  stack<int> s; // Stack to store operands
+  stack<int> s; 														// Stack to store operands
   for (int i = 0; i < postfix.length(); i++) {
-    char c = postfix[i]; // Current character
-    if (c == ' ') continue; // Ignore whitespace
-    if (isdigit(c)) { // If the character is a digit
-      s.push(c - '0'); // Push it to the stack
+    char c = postfix[i]; 												// Current character
+    if (c == ' ') continue; 											// Ignore whitespace
+    if (isdigit(c)) { 													// If the character is a digit
+      s.push(c - '0');													 // Push it to the stack change string to integer
     }
-    else { // If the character is an operator
-      int a = s.top(); s.pop(); // Pop two operands from the stack
+    else { 																// If the character is an operator
+      int a = s.top(); s.pop(); 										// Pop two operands from the stack
       int b = s.top(); s.pop();
-      switch (c) { // Perform the operation and push the result to the stack
+      switch (c) { 														// Perform the operation and push the result to the stack
         case '+': s.push(b + a); break;
         case '-': s.push(b - a); break;
         case '*': s.push(b * a); break;
@@ -74,12 +74,18 @@ int evaluatePostfix(string postfix) {
 
 // Main function
 int main() {
-   string infix; // String to store the infix expression
+	char input;
+   string infix; 														// String to store the infix expression
   cout << "Enter an infix expression: ";
-  getline(cin, infix); // Read the infix expression from the user
-  string postfix = infixToPostfix(infix); // Convert the infix expression to postfix expression
-  cout << "The postfix expression is: " << postfix << endl; // Print the postfix expression
-  int result = evaluatePostfix(postfix); // Evaluate the postfix expression
-  cout << "The result is: " << result << endl; // Print the result
+  getline(cin, infix); 													// Read the infix expression from the user
+  string postfix = infixToPostfix(infix);								 // Convert the infix expression to postfix expression
+  cout << "The postfix expression is: " << postfix << endl;				 // Print the postfix expression
+  int result = evaluatePostfix(postfix); 								// Evaluate the postfix expression
+  cout << "The result is: " << result << endl; 							// Print the result
+  
+   do{
+  	cout<<"would you like to exit y/n ? ";					//question to close program(prevent from auto exit)
+  	cin>>input;
+  } while(input != 'y');
   return 0;
 }
